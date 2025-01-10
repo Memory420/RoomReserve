@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Emerald Suite",
+    "price": 100000.0,
+    "size": 150,
+    "available": true
+  },
+  {
+    "name": "Diamond Loft",
+    "price": 200000.0,
+    "size": 250,
+    "available": true
+  },
+  {
+    "name": "Golden Villa",
+    "price": 300000.0,
+    "size": 300,
+    "available": false
+  },
+  {
+    "name": "Silver Apartment",
+    "price": 80000.0,
+    "size": 120,
+    "available": true
+  },
+  {
+    "name": "Bronze Room",
+    "price": 50000.0,
+    "size": 80,
+    "available": false
+  }
+]

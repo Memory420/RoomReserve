@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Rooms</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const headers = document.querySelectorAll("th");
+            headers.forEach((header, colIndex) => {
+                header.addEventListener("click", () => {
+                    const table = header.closest("table");
+                    const rows = Array.from(table.querySelectorAll("tbody tr"));
+
+                    const isAscending = header.dataset.order === "asc";
+                    header.dataset.order = isAscending ? "desc" : "asc";
+
+                    rows.sort((rowA, rowB) => {
+                        const cellA = rowA.cells[colIndex].innerText.trim();
+                        const cellB = rowB.cells[colIndex].innerText.trim();
+                        return isAscending
+                            ? cellA.localeCompare(cellB, undefined, { numeric: true })
+                            : cellB.localeCompare(cellA, undefined, { numeric: true });
+                    });
+
+                    rows.forEach(row => table.querySelector("tbody").appendChild(row));
+                });
+            });
+        });
+    </script>
+</head>
+<h2>You logged in as <span th:text="${username}"></span>, role: <span th:text="${role}"></span></h2>
+
+<body>
+<h1>Available Rooms</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Size</th>
+        <th>Available</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="room : ${rooms}">
+        <td th:text="${room.id}"></td>
+        <td th:text="${room.name}"></td>
+        <td th:text="${room.price}"></td>
+        <td th:text="${room.size}"></td>
+        <td th:text="${room.available}"></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<button onClick="window.location.href='/logout'">Logout</button>
+<br>
+<button onClick="window.location.href='/register-room'">Register new room</button>
+</body>
+</html>

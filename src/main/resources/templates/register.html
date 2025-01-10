@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<h1>Register New User!</h1>
+
+<form action="/register" method="post" th:object="${user}">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}">
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:field="*{username}" required>
+    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required>
+    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</p>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role" th:field="*{role}">
+        <option value="USER">User</option>
+        <option value="RENTER">Renter</option>
+    </select>
+
+    <br><br>
+    <button type="submit">Register</button>
+
+    <!-- Сообщение об ошибке, если имя пользователя уже существует -->
+    <p th:if="${errorMessage != null}" th:text="${errorMessage}"></p>
+</form>
+
+</body>
+</html>
