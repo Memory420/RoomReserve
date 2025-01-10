@@ -25,7 +25,15 @@ public class RoomController {
     }
     @GetMapping("/rooms")
     public String getRooms(@AuthenticationPrincipal User user, Model model) {
-        if (user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+        model.addAttribute("username", user.getUsername());
+
+        String role = user.getAuthorities().stream()
+                .findFirst()
+                .map(a -> a.getAuthority())
+                .orElse("UNKNOWN");
+        model.addAttribute("role", role);
+
+        if (role.equals("ROLE_ADMIN")) {
             // Админ видит все комнаты
             List<Room> rooms = roomRepository.findAll();
             model.addAttribute("rooms", rooms);
@@ -37,6 +45,7 @@ public class RoomController {
             return "room-list";
         }
     }
+
     @PostMapping("/register-room")
     public String registerRoom(
             @RequestParam String name,
@@ -53,5 +62,4 @@ public class RoomController {
         model.addAttribute("successMessage", "Room registered successfully!");
         return "redirect:/rooms";
     }
-
 }
