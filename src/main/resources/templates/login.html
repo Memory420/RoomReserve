@@ -15,6 +15,9 @@
     <input type="password" id="password" name="password" required><br><br>
 
     <button type="submit">Login</button>
+    <div>
+        <p th:if="${param.error}" style="color:red;">Invalid username or password</p>
+    </div>
 </form>
 </body>
 </html>
