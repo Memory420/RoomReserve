@@ -54,6 +54,10 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/rooms", true)
+                        .failureHandler((request, response, exception) -> {
+                            System.out.println("Failed login attempt: " + exception.getMessage());
+                            response.sendRedirect("/login?error=true"); // Редирект на страницу с ошибкой
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -66,7 +70,7 @@ public class SecurityConfig {
                 .addFilterBefore(new OncePerRequestFilter() {
                     @Override
                     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-                        System.out.println("Current authentication: " + SecurityContextHolder.getContext().getAuthentication());
+//                        System.out.println("Current authentication: " + SecurityContextHolder.getContext().getAuthentication());
                         filterChain.doFilter(request, response);
                     }
                 }, SecurityContextPersistenceFilter.class)
@@ -77,12 +81,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        var renter = User.withDefaultPasswordEncoder()
-                .username("renter")
-                .password("12345")
-                .roles("RENTER")
-                .build();
-        return new InMemoryUserDetailsManager(renter);
+        return customUserDetailsService;
     }
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
