@@ -1,1 +1,1 @@
-Склонировать репозиторий, дай IDE всё скачать, запустить RoomReserveApplication.java
+Склонировать репозиторий, дать IDE всё скачать, запустить RoomReserveApplication.java
