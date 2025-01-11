@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Available Rooms</title>
+</head>
+<h2>You logged in as <span th:text="${username}"></span>, role: <span th:text="${role}"></span></h2>
+<body>
+<h1>Available Rooms</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Size</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="room : ${rooms}">
+    <td th:text="${room.name}"></td>
+    <td th:text="${room.price}"></td>
+    <td th:text="${room.size}"></td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<button onClick="window.location.href='/logout'">Logout</button>
+<div th:if="${successMessage}" style="color: green;">
+  <p th:text="${successMessage}"></p>
+</div>
+<button onClick="window.location.href='/register-room'">Register New Room</button>
+</body>
+</html>
