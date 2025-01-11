@@ -38,8 +38,12 @@ public class RoomController {
             List<Room> rooms = roomRepository.findAll();
             model.addAttribute("rooms", rooms);
             return "admin-room-list";
-        } else {
+        } else if (role.equals("ROLE_RENTER")) {
             // Обычный пользователь видит только доступные комнаты
+            List<Room> rooms = roomRepository.findByAvailableTrue();
+            model.addAttribute("rooms", rooms);
+            return "renter-room-list";
+        } else {
             List<Room> rooms = roomRepository.findByAvailableTrue();
             model.addAttribute("rooms", rooms);
             return "room-list";
