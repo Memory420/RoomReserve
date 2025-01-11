@@ -1,13 +1,10 @@
 package com.memory.roomreserve;
 
-import com.memory.roomreserve.model.Reservation;
 import com.memory.roomreserve.model.Room;
 import com.memory.roomreserve.model.User;
-import com.memory.roomreserve.repository.ReservationRepository;
 import com.memory.roomreserve.repository.RoomRepository;
 import com.memory.roomreserve.repository.UserRepository;
 import com.memory.roomreserve.utils.JsonParser;
-import com.memory.roomreserve.utils.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -16,13 +13,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @SpringBootApplication
 public class RoomReserveApplication {
     private static final Logger log = LoggerFactory.getLogger(RoomReserveApplication.class);
+    private final PasswordEncoder passwordEncoder;
+
+    public RoomReserveApplication(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(RoomReserveApplication.class, args);
@@ -34,6 +34,7 @@ public class RoomReserveApplication {
             // Загрузка пользователей из JSON (если у тебя уже есть этот код)
             List<User> users = JsonParser.loadUsers();
             if (userRepository.count() == 0 && !users.isEmpty()) {
+                users.forEach(user -> user.setPassword(passwordEncoder.encode(user.getPassword())));
                 userRepository.saveAll(users);
                 System.out.println("Loaded users from JSON.");
             }
@@ -50,6 +51,4 @@ public class RoomReserveApplication {
             System.out.println("Rooms in the database: " + roomRepository.count());
         };
     }
-
-
 }
